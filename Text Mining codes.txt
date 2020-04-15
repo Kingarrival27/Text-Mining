@@ -1,0 +1,16 @@
+s=Sys.time()
+library(data.table)
+library(reshape2)
+a=read.csv("source.csv",stringsAsFactors=F, strip.white=T)
+b=data.table(a)
+c=readLines("genes.txt")
+N<-sapply(c,regexpr, b$Abstract)
+N[N> 1] <- 1
+N[N=="-1"]<-0
+N1<-data.frame(PMID =b$PMID,N)
+n4=melt(N1, id.vars="PMID")
+z=subset(n4, value==1)
+write.csv(z,"text_mining_results.csv",row.names=F)
+e=Sys.time()
+t=e-s
+t
